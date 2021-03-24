@@ -1,3 +1,5 @@
+Needed to Fork to make a small change for my version of svelte. 
+
 # svelte-mapbox-gl
 
 Svelte 3 components for Mapbox GL.
