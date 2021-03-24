@@ -1,0 +1,31 @@
+cache:
+  paths:
+    - node_modules/
+
+pages:
+  stage: deploy
+  only:
+    - master
+  image: node:13
+  before_script:
+    - npm ci
+    - echo MAPBOX_ACCESS_TOKEN=$MAPBOX_ACCESS_TOKEN > .env
+  script:
+    - npm run build-storybook -- -o public
+  artifacts:
+    paths:
+      - public
+
+Deploy to npm:
+  stage: deploy
+  only:
+    - tags
+  image: node:13
+  before_script:
+    - npm ci
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+  script:
+    - npm publish --unsafe-perm --access public
+  environment:
+    name: npm
+    url: https://www.npmjs.com/package/@jailbreak-paris/svelte-mapbox-gl
